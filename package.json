@@ -4,5 +4,9 @@
   "license": "MIT",
   "workspaces": {
     "packages": ["packages/*"]
+  },
+  "private": true,
+  "scripts": {
+    "start:backend": "yarn workspace backend start:dev"
   }
 }
