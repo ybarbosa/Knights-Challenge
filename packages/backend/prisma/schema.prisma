@@ -7,13 +7,28 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Knights {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  email String  @unique
-  name  String?
+enum AttributeName {
+  strength
+  dexterity
+  constitution
+  intelligence
+  wisdom
+  charisma
 }
 
-Model Weapons {
+model Knight {
   id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  nickname String  @unique
+  name  String
+  birthday DateTime
+  keyAttribute String
+  weapons   Json
+  attributes Json
+}
 
+model Weapon {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String @unique
+  mod Int
+  attr AttributeName
 }
