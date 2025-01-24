@@ -3,10 +3,17 @@
   "version": "1.0.0",
   "license": "MIT",
   "workspaces": {
-    "packages": ["packages/*"]
+    "packages": [
+      "packages/*"
+    ]
   },
   "private": true,
   "scripts": {
-    "start:backend": "yarn workspace backend start:dev"
+    "start:backend": "yarn workspace backend start:dev",
+    "prisma:generate": "yarn workspace backend prisma:generate",
+    "prisma:push": "yarn workspace backend prisma:push"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^8.0.0"
   }
 }
