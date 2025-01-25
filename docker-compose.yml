@@ -3,10 +3,10 @@ networks:
     name: 'knights-challenge'
 services:
   db:
-    image: mongo
+    build:
+      context: .
+      target: mongo
     container_name: db
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: ${DB_USER}
-      MONGO_INITDB_ROOT_PASSWORD: ${DB_PASSWORD}
+    command: ["mongod", "--replSet", "rs0", "--bind_ip_all", "--setParameter", "enableLocalhostAuthBypass=true"]    
     ports:
       - "${DB_PORT}:27017"
