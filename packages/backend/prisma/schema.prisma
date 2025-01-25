@@ -24,6 +24,7 @@ model Knight {
   keyAttribute String
   weapons   Json
   attributes Json
+  isHero Boolean
 
   @@index([id, nickname])
 }
