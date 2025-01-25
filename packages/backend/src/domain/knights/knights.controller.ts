@@ -7,7 +7,7 @@ export class KnightsController {
   constructor(private readonly appService: KnightsService) {}
 
   @Post('')
-  create(@Body() body: RequestKnightCreateDto) {
-    return this.appService.create(body);
+  async create(@Body() body: RequestKnightCreateDto) {
+    return await this.appService.create(body);
   }
 }

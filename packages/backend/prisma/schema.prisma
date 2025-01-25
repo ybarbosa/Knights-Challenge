@@ -24,6 +24,8 @@ model Knight {
   keyAttribute String
   weapons   Json
   attributes Json
+
+  @@index([id, nickname])
 }
 
 model Weapon {

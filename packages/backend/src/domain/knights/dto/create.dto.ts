@@ -1,19 +1,42 @@
 import { AttributeName } from '@prisma/client';
-import { IsArray, IsDate, IsEnum, IsNotEmpty, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsArray,
+  IsBoolean,
+  IsDate,
+  IsEnum,
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+} from 'class-validator';
 
+class Weapons {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isEquipped: boolean;
+}
 export class RequestKnightCreateDto {
   @IsString()
   @IsNotEmpty()
   name: string;
 
+  @IsString()
+  @IsNotEmpty()
+  nickName: string;
+
   @IsDate()
   @IsNotEmpty()
-  birthday: string;
+  @Type(() => Date)
+  birthday: Date;
 
   @IsArray()
-  @IsNotEmpty()
-  @IsString({ each: true })
-  weapons: string[];
+  @ValidateNested({ each: true })
+  @Type(() => Weapons)
+  weapons: Weapons[];
 
   @IsEnum(AttributeName)
   @IsNotEmpty()
