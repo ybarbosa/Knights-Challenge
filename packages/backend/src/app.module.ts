@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
-import { KnightsController } from './knights/knights.controller';
-import { KnightsService } from './knights/knights.service';
+import { KnightsController } from './domain/knights/knights.controller';
+import { KnightsService } from './domain/knights/knights.service';
+import { PrismaModule } from './domain/prisma/prisma.module';
 
 @Module({
-  imports: [],
+  imports: [PrismaModule],
   controllers: [KnightsController],
   providers: [KnightsService],
 })
