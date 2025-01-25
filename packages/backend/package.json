@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "start:dev": "npx dotenv -e ../../.env nest start --watch",
+    "start:dev": "dotenv -e ../../.env -- nest start --watch",
     "prisma:generate": "npx prisma generate",
     "prisma:push": "npx dotenv -e ../../.env npx prisma db push",
     "prisma:seed": "npx dotenv -e ../../.env ts-node prisma/seed.ts",
