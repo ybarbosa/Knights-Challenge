@@ -4,8 +4,11 @@ import { PrismaService } from '../prisma/prisma.service';
 import { AttributeName, Knight, Weapon } from '@prisma/client';
 import { ResponseStruct } from '../common/responseStruct';
 import { differenceInCalendarYears } from 'date-fns';
+import { RequestKnightUpdateDto } from './dto/update.dto';
 
 export interface IKnightFormatted {
+  id: string;
+  hero: boolean;
   name: string;
   attribute: string;
   weapons: number;
@@ -119,7 +122,7 @@ export class KnightsService {
     };
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<ResponseStruct<IKnightFormatted>> {
     const knight: Knight = await this.prismaService.knight.findUnique({
       where: {
         id,
@@ -130,7 +133,12 @@ export class KnightsService {
       throw new BadRequestException('Knight not found');
     }
 
-    return this.formatteKnight(knight);
+    return {
+      statusCode: 200,
+      message: 'Knight found successfully',
+      data: this.formatteKnight(knight),
+      error: '',
+    };
   }
 
   async delete(id: string) {
@@ -159,7 +167,43 @@ export class KnightsService {
     };
   }
 
-  private formatteKnight(knight: Knight) {
+  async update(id: string, body: RequestKnightUpdateDto) {
+    const knight: Knight = await this.prismaService.knight.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!knight) {
+      throw new BadRequestException('Knight not found');
+    }
+
+    const nickNameExits = await this.prismaService.knight.findUnique({
+      where: {
+        nickname: body.nickName.toLowerCase(),
+      },
+    });
+
+    if (!nickNameExits) {
+      throw new BadRequestException('Nickname already exists');
+    }
+
+    const newKnight: Knight = await this.prismaService.knight.update({
+      where: { id },
+      data: {
+        nickname: body.nickName.toLocaleLowerCase(),
+      },
+    });
+
+    return {
+      statusCode: 200,
+      message: 'Knight updated successfully',
+      data: newKnight,
+      error: '',
+    };
+  }
+
+  private formatteKnight(knight: Knight): IKnightFormatted {
     const weapons = knight.weapons as Array<Weapon & { isEquipped: boolean }>;
     const weaponEquipped = weapons.find((weapon) => weapon.isEquipped);
     const attack = this.calculateAttack(
