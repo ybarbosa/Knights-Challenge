@@ -5,7 +5,7 @@ import { AttributeName, Knight, Weapon } from '@prisma/client';
 import { ResponseStruct } from '../common/responseStruct';
 import { differenceInCalendarYears } from 'date-fns';
 import { RequestKnightUpdateDto } from './dto/update.dto';
-
+import { ObjectId } from 'mongodb';
 export interface IKnightFormatted {
   id: string;
   hero: boolean;
@@ -22,12 +22,17 @@ export interface IKnightFormatted {
 export class KnightsService {
   constructor(private readonly prismaService: PrismaService) {}
   async create(body: RequestKnightCreateDto): Promise<ResponseStruct<Knight>> {
-    const weaponsKnights = body.weapons.map(({ isEquipped, id }) => ({
-      isEquipped,
-      id,
-    }));
+    const weaponsKnights = body.weapons
+      .filter(({ id }) => ObjectId.isValid(id))
+      .map(({ isEquipped, id }) => ({
+        isEquipped,
+        id,
+      }));
 
-    if (weaponsKnights.every((weapon) => weapon.isEquipped === true)) {
+    if (
+      weaponsKnights.length > 1 &&
+      weaponsKnights.every((weapon) => weapon.isEquipped === true)
+    ) {
       throw new BadRequestException(
         'Only one weapon can be equipped by a knight.',
       );
