@@ -133,6 +133,32 @@ export class KnightsService {
     return this.formatteKnight(knight);
   }
 
+  async delete(id: string) {
+    const knight: Knight = await this.prismaService.knight.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!knight) {
+      throw new BadRequestException('Knight not found');
+    }
+
+    const newKnight: Knight = await this.prismaService.knight.update({
+      where: { id },
+      data: {
+        isHero: true,
+      },
+    });
+
+    return {
+      statusCode: 200,
+      message: 'Knight deleted successfully',
+      data: newKnight,
+      error: '',
+    };
+  }
+
   private formatteKnight(knight: Knight) {
     const weapons = knight.weapons as Array<Weapon & { isEquipped: boolean }>;
     const weaponEquipped = weapons.find((weapon) => weapon.isEquipped);
@@ -151,6 +177,7 @@ export class KnightsService {
       weapons: weapons.length,
       birthday: this.calculateDifferenceYears(knight.birthday),
       attack,
+      hero: knight.isHero,
       experance,
     };
   }

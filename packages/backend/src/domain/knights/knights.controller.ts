@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post, Query } from '@nestjs/common';
 import { KnightsService } from './knights.service';
 import { RequestKnightCreateDto } from './dto/create.dto';
 
@@ -19,5 +19,10 @@ export class KnightsController {
   @Get('/:id')
   async findById(@Param('id') id: string) {
     return await this.appService.findById(id);
+  }
+
+  @Delete('/:id')
+  async delete(@Param('id') id: string) {
+    return await this.appService.delete(id);
   }
 }
