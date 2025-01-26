@@ -1,4 +1,3 @@
-console.log('Bateu aqui')
 const replicaSet = "rs0";
 rs.initiate({
     _id: replicaSet,
