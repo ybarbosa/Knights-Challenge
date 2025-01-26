@@ -10,6 +10,7 @@
   "private": true,
   "scripts": {
     "start:backend": "yarn workspace backend start:dev",
+    "test:backend": "yarn workspace backend test",
     "prisma:generate": "yarn workspace backend prisma:generate",
     "prisma:push": "yarn workspace backend prisma:push",
     "prisma:seed": "yarn workspace backend prisma:seed"

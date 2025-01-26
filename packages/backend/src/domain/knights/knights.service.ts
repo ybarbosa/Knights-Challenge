@@ -28,7 +28,6 @@ export class KnightsService {
         isEquipped,
         id,
       }));
-
     if (
       weaponsKnights.length > 1 &&
       weaponsKnights.every((weapon) => weapon.isEquipped === true)
@@ -57,13 +56,14 @@ export class KnightsService {
     }
 
     const knight = await this.prismaService.knight.findUnique({
-      select: {
-        id: true,
-      },
       where: {
         nickname: body.nickName.toLowerCase(),
       },
     });
+
+    if (knight) {
+      throw new BadRequestException('Nickname already exists');
+    }
 
     const weaponsFormatted = weapons.map(({ id, ...rest }) => {
       const weapon = weaponsKnights.find((weapon) => weapon.id === id);
@@ -73,10 +73,6 @@ export class KnightsService {
         ...rest,
       };
     });
-
-    if (knight) {
-      throw new BadRequestException('Nickname already exists');
-    }
 
     const atribuitesDefault = {
       strength: 0,
@@ -107,7 +103,7 @@ export class KnightsService {
     };
   }
 
-  async findAll(filters: string): Promise<ResponseStruct<IKnightFormatted[]>> {
+  async findAll(filters?: string): Promise<ResponseStruct<IKnightFormatted[]>> {
     const handlerFilters = {
       heroes: { isHero: true },
     };
