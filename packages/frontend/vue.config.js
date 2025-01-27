@@ -4,6 +4,6 @@ module.exports = defineConfig({
     'vuetify'
   ],
   devServer: {
-    port: process.env.APP_PORT
+    port: process.env.VUE_APP_APP_PORT
   }
 })
