@@ -31,7 +31,7 @@ Antes de iniciar, certifique-se de ter as seguintes ferramentas instaladas:
 1. Clone o repositório:
    ```bash
    git clone https://github.com/ybarbosa/Knights-Challenge.git
-   cd knights-challenge
+   cd Knights-Challenge
    ```
 2. Copie o arquivo de variáveis de ambiente:
    ```bash
