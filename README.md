@@ -57,8 +57,8 @@ By default, the backend runs on port 3000 and the frontend on port 3001, but fee
 - VUE_APP_APP_PORT: frontend port
 
 ## Suport
-Doc api: http://localhost:3000/api
-Frontend: http://localhost:3001
+- Doc api: http://localhost:3000/api
+- Link frontend: http://localhost:3001
 
 ## Contact
 - [Linkedin](https://www.linkedin.com/in/ybarbosa/) 
