@@ -2,28 +2,49 @@ import { api } from './axios'
 
 const PATH = '/knight'
 const findAll = async (filter) => {
-    const result = await api.get(PATH, {params: { filter }})
-    return result.data;
+    try {
+        const result = await api.get(PATH, {params: { filter }})
+        return { data: result.data, isError: false };
+    } catch({ response: { data } }) {
+        return { data: data.message, isError: true };
+    }
 }
 
 const findById = async (id) => {
-    const result = await api.get(`${PATH}/${id}`)
-    return result.data;
+    try {
+        const result = await api.get(`${PATH}/${id}`);
+        return { data: result.data, isError: false };
+    } catch ({ response: { data } }) {
+        return { data: data.message, isError: true };
+    }
 }
+    
 
 const remove = async (id) => {
-    const result = await api.delete(`${PATH}/${id}`)
-    return result.data;
+    try {
+        const result = await api.delete(`${PATH}/${id}`)
+        return { data: result.data, isError: false };
+    } catch ({ response: { data } }) {
+        return { data: data.message, isError: true };
+    }
 }
 
 const update = async ({ id, nickName }) => {
-    const result = await api.patch(`${PATH}/${id}`, { nickName })
-    return result.data;
+    try {
+        const result = await api.patch(`${PATH}/${id}`, { nickName })
+        return { data: result.data, isError: false };
+    } catch ({ response: { data } }) {
+        return { data: data.message, isError: true }; 
+    }
 }
 
 const create = async (payload) => {
-    const result = await api.post(PATH, payload)
-    return result.data
+    try {
+        const result = await api.post(PATH, payload)
+        return { data: result.data, isError: false };
+    } catch ({ response: { data } }) {
+        return { data: data.message, isError: true };
+    }
 }
 
 export const knightService = {

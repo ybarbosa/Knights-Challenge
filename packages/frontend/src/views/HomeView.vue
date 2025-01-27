@@ -15,16 +15,20 @@
         </li>
       </ul>
     </div>
+    <alert v-if="error" type="error" :text="error"/>
   </v-container>
 </template>
 
 <script>
 import { mapState, mapActions  } from 'vuex';
-
+import Alert from '@/components/alert.vue';
 export default {
   name: "HomeView",
+  components: {
+    Alert
+  },
   computed: {
-    ...mapState(["knights"]),
+    ...mapState(["knights", "error"]),
   },
   methods: {
     ...mapActions({
@@ -36,7 +40,6 @@ export default {
     async filterByHero(value) {
       const filter = value ? 'heroes' : '';
       await this.findAllKnight(filter);
-
     }
   },
   async mounted() {

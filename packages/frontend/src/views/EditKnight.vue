@@ -16,9 +16,9 @@
 
           <!-- Knight Details -->
           <v-card-text v-else>
-            <v-card v-if="knight">
+            <v-card v-if="Object.keys(knight).length">
              <div class="knight-details mb-2">
-              <h3 class="knight-name mb-3">{{ knight.name.toUpperCase() }}</h3>
+              <h3 class="knight-name mb-3">{{ knight?.name.toUpperCase() }}</h3>
               <p class="knight-info"><strong>Apelido:</strong> {{ knight.nickName }}</p>
               <p class="knight-info"><strong>Idade:</strong> {{ knight.birthday }}</p>
               <p class="knight-info"><strong>Armas:</strong> {{ knight.weapons }}</p>
@@ -26,7 +26,6 @@
               <p class="knight-info"><strong>Ataque:</strong> {{ knight.attack }}</p>
               <p class="knight-info"><strong>Exp:</strong> {{ knight.experance }}</p>
               <p class="knight-info"><strong>Hero?</strong> {{ knight.hero ? 'Sim' : 'Não' }}</p>
-
             </div>
 
            <v-row class="ml-2 mr-2">
@@ -52,8 +51,11 @@
               </v-btn>
             </v-col>
            </v-row>
-          </v-card>
-          </v-card-text>
+            </v-card>
+            <v-card v-else flat>
+              No knight found
+            </v-card>
+          </v-card-text>          
         </v-card>
       </v-col>
     </v-row>
@@ -95,15 +97,19 @@
         </v-card-actions>
       </v-card>
   </v-dialog>
+  <alert v-if="error" type="error" :text="error"/>
   </v-container>
 
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex';
-
+import Alert from '@/components/alert.vue';
 export default {
   name: 'KnightDetails',
+  components: {
+    Alert
+  },
   data() {
     return {
       loading: true,
@@ -115,7 +121,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["knight"]),
+    ...mapState(["knight", "error"]),
     knightId() {
       return this.$route.params.id;
     },

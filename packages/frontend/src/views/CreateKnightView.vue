@@ -87,15 +87,20 @@
         </v-card>
       </v-col>
     </v-row>
+  <alert v-if="error" type="error" :text="error"/>
   </v-container>
 </template>
 
 <script>
 import { mapState, mapActions  } from 'vuex';
+import Alert from '@/components/alert.vue';
 export default {
   name: "AddKnight",
+  components: {
+    Alert
+  },
   computed: {
-    ...mapState(["weapons"]),
+    ...mapState(["weapons","error"]),
     currentDate(){
       const date = new Date();
       const year = date.getFullYear();
@@ -140,7 +145,12 @@ export default {
         nickName: this.newKnight.nickName.toLowerCase(),
         weapons
       }
-      await this.createKnight(payload)
+      const { isError } = await this.createKnight(payload)
+
+      if(isError) {
+        this.loading = false
+        return
+      }
 
       this.$router.push('/')
     },
