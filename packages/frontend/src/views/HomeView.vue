@@ -19,23 +19,20 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import { knightService } from '@/service/knight'
+import { mapState, mapActions  } from 'vuex';
 
 export default {
   name: "HomeView",
   computed: {
     ...mapState(["heroes"]),
-   
   },
   methods: {
+    ...mapActions({
+      findAllKnight: 'findAllKnight',
+    }),
     openKnightDetails(id) {
       this.$router.push(`edit-knight/${id}`);
     },
-
-    async findAllKnight(filter) {
-      return await knightService.findAll(filter)
-    }
   },
   async mounted() {
     await this.findAllKnight();

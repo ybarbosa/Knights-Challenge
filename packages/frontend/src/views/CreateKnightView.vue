@@ -9,8 +9,8 @@
 
           <v-form v-model="formValid">
             <v-text-field
-              v-model="newKnight.nombre"
-              label="Knight name"
+              v-model="newKnight.name"
+              label="Name"
               :rules="[rules.required]"
               outlined
               dense
@@ -19,8 +19,8 @@
             />
 
             <v-text-field
-              v-model="newKnight.funcion"
-              label="Function"
+              v-model="newKnight.nickName"
+              label="Nickname"
               :rules="[rules.required]"
               outlined
               dense
@@ -29,28 +29,9 @@
             />
 
             <v-text-field
-              v-model="newKnight.titulo"
-              label="Title"
-              :rules="[rules.required]"
-              outlined
-              dense
-              height="48px"
-              class="mb-8"
-            />
-
-            <v-text-field
-              v-model="newKnight.ataque"
-              label="Attack"
-              :rules="[rules.required]"
-              outlined
-              dense
-              height="48px"
-              class="mb-8"
-            />
-
-            <v-text-field
-              v-model="newKnight.dataNascimento"
+              v-model="newKnight.birthday"
               label="Date of birth"
+              :max="currentDate"
               :rules="[rules.required]"
               outlined
               dense
@@ -59,23 +40,40 @@
               class="mb-8"
             />
 
-            <v-subheader class="mt-6">Attributes</v-subheader>
-
-            <v-row class="mt-4">
-              <v-col v-for="(value, attribute) in attributes" :key="attribute" cols="12" sm="6">
-                <v-text-field
-                  v-model="attributes[attribute]"
-                  :label="toCamelCase(attribute)"
-                  outlined
-                  dense
-                  height="48px"
-                  append-icon="mdi-plus"
-                  @click:append="increaseAttribute(attribute)"
-                  class="mb-8"
+            <v-row >
+              <v-col>
+                <v-select
+                  required
+                  :rules="[rules.select]"
+                  label="Weapon"
+                  v-model="newKnight.weapons"
+                  :items="weapons"
+                  return-object
+                  item-text="name"
+                  item-value="id"
+                  multiple
+                  />
+              </v-col>
+              <v-col>
+              <v-select
+                required
+                v-if="newKnight.weapons.length"
+                :rules="[rules.select]"
+                label="Equipped Weapon"
+                v-model="weaponsEquipped"
+                :items="newKnight.weapons"
+                item-text="name"
+                item-value="id"
                 />
               </v-col>
             </v-row>
-
+            
+             <v-select
+             :rules="[rules.required]"
+              label="attributes"
+              v-model="newKnight.keyAttribute"
+              :items="attributes"
+              />
             <v-btn
               :disabled="!formValid"
               color="primary"
@@ -93,37 +91,57 @@
 </template>
 
 <script>
+import { mapState, mapActions  } from 'vuex';
 export default {
   name: "AddKnight",
+  computed: {
+    ...mapState(["weapons"]),
+    currentDate(){
+      const date = new Date();
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); // Adiciona zero à esquerda se necessário
+      const day = String(date.getDate()).padStart(2, '0'); // Adiciona zero à esquerda se necessário
+
+      return `${year}-${month}-${day}`;
+    }
+  },
   data() {
     return {
       formValid: false,
+      weaponsEquipped: [],
       newKnight: {
-        nombre: "",
-        funcion: "",
-        titulo: "",
-        ataque: "",
-        dataNascimento: "",
+        name: "",
+        nickName: "",
+        keyAttribute: "",
+        weapons: "",
+        birthday: "",
       },
-      attributes: {
-        strength: 0,
-        character: 0,
-        agility: 0,
-      },
+      attributes: ['strength', 'dexterity', 'constitution', 'intelligence', 'wisdom', 'charisma'],
       rules: {
         required: value => !!value || "This field is required",
+        select:  (v) =>  v.length>0 || "Item is required"
       },
     };
   },
   methods: {
-    addKnight() {
-      console.log("New Knight:", this.newKnight);
-      console.log("Attributes:", this.attributes);
-    },
-    increaseAttribute(attribute) {
-      if (this.attributes[attribute] < 100) {
-        this.attributes[attribute]++;
+    ...mapActions({
+      findAllWeapon: 'findAllWeapon',
+      createKnight: 'createKnight'
+    }),
+    async addKnight() {
+      const weapons = this.newKnight.weapons.map(({ id }) => ({
+        isEquipped: this.weaponsEquipped === id,
+        id,
+      }))
+
+      const payload = {
+        ...this.newKnight,
+        birthday: new Date(this.newKnight.birthday),
+        weapons
       }
+      await this.createKnight(payload)
+
+      this.$router.push('/')
     },
     toCamelCase(str) {
       return str
@@ -132,6 +150,9 @@ export default {
         .replace(/\s+/g, '');
       },
   },
+  async mounted() {
+    await this.findAllWeapon();
+  }
 };
 </script>
 
