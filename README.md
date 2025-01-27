@@ -8,21 +8,28 @@
  - [Vue](https://vuejs.org/)
  - [Vuex](https://vuex.vuejs.org/)
 
+## Feature
+- [x] Knight Registration
+- [x] Knight Deletion
+- [x] View Knight Details
+- [x] List of Deceased Knights
+- [x] Edit Knight Information
+
+## Tools is required
+Docker and Yarn
+
 ## Setup
 Add environment variables
 ```bash
 cp .env.example .env
 ```
 
-## Tools is required
-Docker and Yarn
-
-## Running database
-Runs container with MongoDB
+## Running project
+Runnig docker with mongoDB
 ```bash
 docker compose up db -d
 ```
-## Running project
+
 Install dependencies
 ```bash
 yarn install
@@ -43,5 +50,15 @@ Running frontend
 yarn start:frontend
 ```
 
-## Endpopint
-The documentation for all project endpoints is available at the /api URL.
+## Obs
+By default, the backend runs on port 3000 and the frontend on port 3001, but feel free to modify them if you wish. These are defined in the environment variables: 
+
+- API_PORT and VUE_APP_API_PORT: backend port
+- VUE_APP_APP_PORT: frontend port
+
+## Suport
+Doc api: http://localhost:3000/api
+Frontend: http://localhost:3001
+
+## Contact
+- [Linkedin](https://www.linkedin.com/in/ybarbosa/) 
