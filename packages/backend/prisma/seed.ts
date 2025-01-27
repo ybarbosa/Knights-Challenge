@@ -16,6 +16,35 @@ async function main() {
       attr: AttributeName.strength,
     }
   })
+
+  const weapon = await prisma.weapon.create({
+     data: {
+      name: 'ring',
+      mod: 15,
+      attr: AttributeName.strength,
+    }
+  })
+
+  await prisma.knight.create({
+    data: {
+      nickname: 'green_lantern',
+      name: 'Hal Jordan',
+      birthday: new Date(1990, 10, 12),
+      weapons: [
+        { ...weapon, isEquipped: true }
+      ],
+      keyAttribute: AttributeName.intelligence,
+      attributes: {
+        strength: 0,
+        dexterity: 0,
+        constitution: 0,
+        intelligence: 12,
+        wisdom: 0,
+        charisma: 0
+      },
+      isHero: false
+    }
+  })
 }
 main()
   .then(async () => {
