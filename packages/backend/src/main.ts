@@ -9,7 +9,7 @@ async function bootstrap() {
   app.enableCors();
   const config = new DocumentBuilder()
     .setTitle('Api knights-challenge')
-    .setVersion('0.0.1')
+    .setVersion('0.1.0')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
