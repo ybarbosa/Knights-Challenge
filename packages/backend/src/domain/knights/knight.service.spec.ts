@@ -312,8 +312,7 @@ describe('KnightService', () => {
       it('Should return an error', async () => {
         const idFake = mockObjectId();
         knightMock.findUnique
-          .mockImplementationOnce(() => ({ id: idFake }))
-          .mockImplementationOnce(() => null);
+          .mockImplementation(() => ({ id: idFake }))
         try {
           await sut.update(idFake, {
             nickName: 'test',
@@ -333,7 +332,10 @@ describe('KnightService', () => {
     describe('When payload is valid', () => {
       it('Should update an knight', async () => {
         const idFake = mockObjectId();
-        knightMock.findUnique.mockReturnValue({ id: idFake });
+         knightMock.findUnique
+          .mockImplementationOnce(() => ({ id: idFake }))
+          .mockImplementationOnce(() => null);
+        
         await sut.update(idFake, {
           nickName: 'TEST',
         });

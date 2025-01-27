@@ -184,8 +184,8 @@ export class KnightsService {
         nickname: body.nickName.toLowerCase(),
       },
     });
-
-    if (!nickNameExits) {
+    
+    if (nickNameExits) {
       throw new BadRequestException('Nickname already exists');
     }
 
