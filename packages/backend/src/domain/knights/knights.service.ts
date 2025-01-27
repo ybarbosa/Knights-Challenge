@@ -146,6 +146,10 @@ export class KnightsService {
   }
 
   async delete(id: string) {
+     if(!ObjectId.isValid(id)) {
+      throw new BadRequestException('KnightId not valid');
+    }
+
     const knight: Knight = await this.prismaService.knight.findUnique({
       where: {
         id,
@@ -172,6 +176,10 @@ export class KnightsService {
   }
 
   async update(id: string, body: RequestKnightUpdateDto) {
+     if(!ObjectId.isValid(id)) {
+      throw new BadRequestException('KnightId not valid');
+    }
+
     const knight: Knight = await this.prismaService.knight.findUnique({
       where: {
         id,
