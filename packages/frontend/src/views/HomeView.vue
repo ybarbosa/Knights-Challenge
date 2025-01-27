@@ -2,15 +2,14 @@
   <v-container class="home">
     <div class="contenedor">
       <ul class="knight-list">
-        <li v-for="knight in heroes" :key="knight.nombre" class="knight-card" @click="openKnightDetails(knight.id)">
-          <div class="knight-image-container">
-            <img :src="knight.imagen" alt="Knight Image" class="knight-image" />
-          </div>
+        <li v-for="knight in knights" :key="knight.nickName" class="knight-card" @click="openKnightDetails(knight.id)">
           <div class="knight-details">
-            <h3 class="knight-name">{{ knight.nombre }}</h3>
-            <p class="knight-info"><strong>Function:</strong> {{ knight.funcion }}</p>
-            <p class="knight-info"><strong>Title:</strong> {{ knight.titulo }}</p>
-            <p class="knight-info"><strong>Attack:</strong> {{ knight.ataque }}</p>
+            <h3 class="knight-name">{{ knight.name.toUpperCase() }}</h3>
+            <p class="knight-info"><strong>Idade:</strong> {{ knight.birthday }}</p>
+            <p class="knight-info"><strong>Armas:</strong> {{ knight.weapons }}</p>
+            <p class="knight-info"><strong>Atributo:</strong> {{ knight.attribute }}</p>
+            <p class="knight-info"><strong>Ataque:</strong> {{ knight.attack }}</p>
+            <p class="knight-info"><strong>Exp:</strong> {{ knight.experance }}</p>
           </div>
         </li>
       </ul>
@@ -24,7 +23,7 @@ import { mapState, mapActions  } from 'vuex';
 export default {
   name: "HomeView",
   computed: {
-    ...mapState(["heroes"]),
+    ...mapState(["knights"]),
   },
   methods: {
     ...mapActions({

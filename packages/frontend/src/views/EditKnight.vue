@@ -17,14 +17,26 @@
           <!-- Knight Details -->
           <v-card-text v-else>
             <v-card v-if="knight">
-              <!-- Editable Name Input -->
-              <v-text-field
-                v-model="knight.nombre"
-                label="Knight Name"
-                outlined
-                dense
-                class="mb-4"
-              />
+             <div class="knight-details mb-2">
+              <h3 class="knight-name">{{ knight.name.toUpperCase() }}</h3>
+              <p class="knight-info"><strong>Idade:</strong> {{ knight.birthday }}</p>
+              <p class="knight-info"><strong>Armas:</strong> {{ knight.weapons }}</p>
+              <p class="knight-info"><strong>Atributo:</strong> {{ knight.attribute }}</p>
+              <p class="knight-info"><strong>Ataque:</strong> {{ knight.attack }}</p>
+              <p class="knight-info"><strong>Exp:</strong> {{ knight.experance }}</p>
+              <p class="knight-info"><strong>Hero?</strong> {{ knight.hero ? 'Sim' : 'Não' }}</p>
+
+            </div>
+
+            <v-btn
+              :disabled="knight.hero"
+              color="primary"
+              @click="updateKnight"
+              class="mt-4"
+              block
+            >
+              Convert to hero
+            </v-btn>
             </v-card>
           </v-card-text>
         </v-card>
@@ -34,44 +46,36 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'KnightDetails',
   data() {
     return {
-      knight: null,
       loading: true,
     };
   },
   computed: {
-    ...mapState(["heroes"]),
+    ...mapState(["knight"]),
     knightId() {
       return this.$route.params.id;
     },
   },
   methods: {
-    fetchKnightDetails() {
-      const id = this.$route.params.id;
-
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          const knight = this.heroes.find(hero => hero.id == id);
-          
-          if (!knight) {
-            this.$router.push('/');
-          } else {
-            this.knight = knight;
-          }
-
-          this.loading = false;
-          resolve(knight);
-        }, 3000);
-      });
-    },
+     ...mapActions({
+      deleteKnight: 'deleteKnight',
+      findByIdKnight: 'findByIdKnight'
+    }),
+    async updateKnight() {
+      this.loading = true
+      await this.deleteKnight(this.knightId)
+      this.loading = false
+    }
   },
-  mounted() {
-    this.fetchKnightDetails();
+  async mounted() {
+    this.loading = true
+    await this.findByIdKnight(this.knightId);
+    this.loading = false
   },
 };
 </script>

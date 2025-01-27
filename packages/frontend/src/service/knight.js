@@ -5,6 +5,17 @@ const findAll = async (filter) => {
     const result = await api.get(PATH, {params: { filter }})
     return result.data;
 }
+
+const findById = async (id) => {
+    const result = await api.get(`${PATH}/${id}`)
+    return result.data;
+}
+
+const remove = async (id) => {
+    const result = await api.delete(`${PATH}/${id}`)
+    return result.data;
+}
+
 const create = async (payload) => {
     const result = await api.post(PATH, payload)
     return result.data
@@ -12,5 +23,7 @@ const create = async (payload) => {
 
 export const knightService = {
     findAll,
-    create
+    create,
+    findById,
+    remove
 }

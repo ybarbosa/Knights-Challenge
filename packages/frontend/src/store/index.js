@@ -7,37 +7,38 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    knight: [
-      {
-        id: 1,
-        nombre: "Artanis",
-        funcion: "Agresor",
-        titulo: "Jerarca de los daelaam",
-        ataque: "111",
-        imagen: "https://static.heroesofthestorm.com/heroes/yrel/skins/light-of-hope-800.jpg",
-      },
-    ],
-    weapons: []
+    knights: [],
+    weapons: [],
+    knight: {},
   },
   getters: {
   },
   mutations: {
-    setKnight(state, value) {
-      state.heroes = [
-        ...state.knight,
-        ...value
-      ]
+    setKnights(state, value) {
+      state.knights = [ ...value ]
     },
     setWeapon(state, value) {
-      state.weapons = [
-        ...state.weapons,
-        ...value
-      ]
-    }
+      state.weapons = [ ...value ]
+    },
+
+    setKnight(state, value) {
+      state.knight = { ...value }
+    },
   },
   actions: {
     async findAllKnight({commit}, filters) {
       const result = await knightService.findAll(filters)
+      commit('setKnights', result.data)
+    },
+
+    async deleteKnight({dispatch}, id) {
+      await knightService.remove(id)
+      dispatch('findByIdKnight', id)
+
+    },
+
+    async findByIdKnight({commit}, id) {
+      const result = await knightService.findById(id)
       commit('setKnight', result.data)
     },
 
