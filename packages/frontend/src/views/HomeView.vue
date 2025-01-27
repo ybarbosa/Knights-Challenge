@@ -1,6 +1,7 @@
 <template>
   <v-container class="home">
     <div class="contenedor">
+      <v-checkbox label="Filter by heroes" @change="filterByHero"/>
       <ul class="knight-list">
         <li v-for="knight in knights" :key="knight.nickName" class="knight-card" @click="openKnightDetails(knight.id)">
           <div class="knight-details">
@@ -32,6 +33,11 @@ export default {
     openKnightDetails(id) {
       this.$router.push(`edit-knight/${id}`);
     },
+    async filterByHero(value) {
+      const filter = value ? 'heroes' : '';
+      await this.findAllKnight(filter);
+
+    }
   },
   async mounted() {
     await this.findAllKnight();
