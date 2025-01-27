@@ -1,73 +1,87 @@
-# Knights Challenge 
+# Knights Challenge
 
-## Stack
- - [NodeJs](https://nodejs.org/en)
- - [PrismaORM](https://www.prisma.io/?via=start&gad_source=1&gclid=Cj0KCQiA19e8BhCVARIsALpFMgEJ0eOAMb4O02iUZ8ecYw_MDfk13leVIIziLB41kiJMjK4Yj4l1W6YaAp8_EALw_wcB)
- - [MongoDB](https://www.mongodb.com/pt-br/lp/cloud/atlas/try4?utm_source=google&utm_campaign=search_gs_pl_evergreen_atlas_core_retarget-brand_gic-null_amers-all_ps-all_desktop_eng_lead&utm_term=mongodb&utm_medium=cpc_paid_search&utm_ad=e&utm_ad_campaign_id=14412646314&adgroup=131761122172&cq_cmp=14412646314&gad_source=1&gclid=Cj0KCQiA19e8BhCVARIsALpFMgE1ganpjdDOnSKnsDY1DfsRlXahKEdzqRmWkIK1CSmkLmswghRN5xYaAm81EALw_wcB)
- - [Docker](https://www.docker.com/)
- - [Vue](https://vuejs.org/)
- - [Vuex](https://vuex.vuejs.org/)
+## 📌 Overview
+**Knights Challenge** é um sistema para gerenciar cavaleiros, permitindo cadastro, edição, visualização e exclusão de registros. Além disso, há uma listagem dos cavaleiros falecidos.
 
-## Feature
-- [x] Knight Registration
-- [x] Knight Deletion
-- [x] View Knight Details
-- [x] List of Deceased Knights
-- [x] Edit Knight Information
+## 🚀 Stack Tecnológica
+Este projeto utiliza as seguintes tecnologias:
 
-## Tools is required
-Docker and Yarn
+- [Node.js](https://nodejs.org/en) - Backend
+- [Prisma ORM](https://www.prisma.io/) - ORM para banco de dados
+- [MongoDB](https://www.mongodb.com/) - Banco de dados NoSQL
+- [Docker](https://www.docker.com/) - Gerenciamento de containers
+- [Vue.js](https://vuejs.org/) - Frontend
+- [Vuex](https://vuex.vuejs.org/) - Gerenciamento de estado do Vue.js
 
-## Setup
-Add environment variables
-```bash
-cp .env.example .env
-```
+## 🔥 Funcionalidades
+- ✅ Cadastro de Cavaleiros
+- ✅ Exclusão de Cavaleiros
+- ✅ Visualização de Detalhes dos Cavaleiros
+- ✅ Listagem de Cavaleiros Falecidos
+- ✅ Edição de Informações dos Cavaleiros
 
-## Running project
-##### At the root of the project, run the following commands: 
-\
-Runnig docker with mongoDB
+## 🔧 Requisitos
+Antes de iniciar, certifique-se de ter as seguintes ferramentas instaladas:
+
+- [Docker](https://www.docker.com/)
+- [Node.js v22](https://nodejs.org/en)
+- [Yarn](https://yarnpkg.com/)
+
+## ⚙️ Configuração
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/ybarbosa/Knights-Challenge.git
+   cd knights-challenge
+   ```
+2. Copie o arquivo de variáveis de ambiente:
+   ```bash
+   cp .env.example .env
+   ```
+3. Instale as dependências do projeto:
+   ```bash
+   yarn install
+   ```
+
+## ▶️ Executando o Projeto
+No diretório raiz do projeto, execute os seguintes comandos:
+
+### 1️⃣ Iniciar o Banco de Dados
 ```bash
 docker compose up db -d
 ```
 
-Install dependencies
-```bash
-yarn install
-```
-
-Create documents and running seed(required)
+### 2️⃣ Criar Estrutura no Banco e Popular com Dados Iniciais
 ```bash
 yarn prisma:push && yarn prisma:seed
 ```
 
-Running backend
+### 3️⃣ Iniciar o Backend
 ```bash
 yarn start:backend
 ```
 
-Running frontend
+### 4️⃣ Iniciar o Frontend
 ```bash
 yarn start:frontend
 ```
 
-## Testing
-Script to run backend tests
-
+## 🧪 Testes
+Para rodar os testes do backend, execute:
 ```bash
 yarn test:backend
 ```
 
-## Obs
-By default, the backend runs on port 3000 and the frontend on port 3001, but feel free to modify them if you wish. These are defined in the environment variables: 
+## ⚠️ Observações
+Por padrão, as portas utilizadas são:
 
-- API_PORT and VUE_APP_API_PORT: backend port
-- VUE_APP_APP_PORT: frontend port
+- **Backend:** `3000` (variáveis `API_PORT` e `VUE_APP_API_PORT`)
+- **Frontend:** `3001` (variável `VUE_APP_APP_PORT`)
 
-## Suport
-- Doc api: http://localhost:3000/api
-- Link frontend: http://localhost:3001
+Caso necessário, você pode alterá-las no arquivo `.env`.
 
-## Contact
-- [Linkedin](https://www.linkedin.com/in/ybarbosa/) 
+## 📖 Documentação e Acesso
+- **API Docs:** [http://localhost:3000/api](http://localhost:3000/api)
+- **Frontend:** [http://localhost:3001](http://localhost:3001)
+
+## 📬 Contato
+- [LinkedIn](https://www.linkedin.com/in/ybarbosa/)
