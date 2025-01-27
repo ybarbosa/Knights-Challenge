@@ -4,11 +4,18 @@ const prisma = new PrismaClient({});
 async function main() {
   await prisma.weapon.create({
     data: {
-      name: 'Espada',
+      name: 'sword',
       mod: 10,
       attr: AttributeName.strength,
     },
   });
+  await prisma.weapon.create({
+     data: {
+      name: 'hatchet',
+      mod: 15,
+      attr: AttributeName.strength,
+    }
+  })
 }
 main()
   .then(async () => {
