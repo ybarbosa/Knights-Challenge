@@ -137,18 +137,13 @@ export default {
       const payload = {
         ...this.newKnight,
         birthday: new Date(this.newKnight.birthday),
+        nickName: this.newKnight.nickName.toLowerCase(),
         weapons
       }
       await this.createKnight(payload)
 
       this.$router.push('/')
     },
-    toCamelCase(str) {
-      return str
-        .replace(/(?:^\w|[A-Z]|\b\w|\s+)/g, (match, index) => 
-          index === 0 ? match.toLowerCase() : match.toUpperCase())
-        .replace(/\s+/g, '');
-      },
   },
   async mounted() {
     await this.findAllWeapon();
