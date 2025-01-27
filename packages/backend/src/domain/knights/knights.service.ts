@@ -124,6 +124,9 @@ export class KnightsService {
   }
 
   async findById(id: string): Promise<ResponseStruct<IKnightFormatted>> {
+    if(!ObjectId.isValid(id)) {
+      throw new BadRequestException('KnightId not valid');
+    }
     const knight: Knight = await this.prismaService.knight.findUnique({
       where: {
         id,
