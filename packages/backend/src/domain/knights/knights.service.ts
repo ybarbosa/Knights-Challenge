@@ -240,6 +240,11 @@ export class KnightsService {
         mod: -1,
       },
       {
+        min: 11,
+        max: 12,
+        mod: 0,
+      },
+      {
         min: 13,
         max: 15,
         mod: 1,
