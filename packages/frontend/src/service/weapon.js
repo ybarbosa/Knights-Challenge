@@ -2,8 +2,12 @@ import { api } from './axios'
 
 const PATH = '/weapon'
 const findAll = async () => {
-    const result = await api.get(PATH)
-    return result.data;
+    try {
+        const result = await api.get(PATH)
+        return  { data: result.data, isError: false };
+    } catch({ response: { data } }) {
+        return { data: data.message, isError: true };
+    }
 }
 
 

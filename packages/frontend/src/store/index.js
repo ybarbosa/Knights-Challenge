@@ -18,7 +18,7 @@ export default new Vuex.Store({
     setKnights(state, value) {
       state.knights = [ ...value ]
     },
-    setWeapon(state, value) {
+    setWeapons(state, value) {
       state.weapons = [ ...value ]
     },
 
@@ -76,8 +76,13 @@ export default new Vuex.Store({
     },
 
     async findAllWeapon({commit}){
-      const result = await weaponService.findAll()
-      commit('setWeapon', result.data)
+      const { isError, data: result } = await weaponService.findAll()
+      if(isError) {
+        commit('setWeapons', [])
+        commit('setError', result)
+        return
+      }
+      commit('setWeapons', result.data)
     },
 
     async createKnight({commit}, payload) {
