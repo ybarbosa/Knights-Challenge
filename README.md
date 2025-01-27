@@ -25,6 +25,8 @@ cp .env.example .env
 ```
 
 ## Running project
+##### At the root of the project, run the following commands: 
+\
 Runnig docker with mongoDB
 ```bash
 docker compose up db -d
@@ -48,6 +50,13 @@ yarn start:backend
 Running frontend
 ```bash
 yarn start:frontend
+```
+
+## Testing
+Script to run backend tests
+
+```bash
+yarn test:backend
 ```
 
 ## Obs
