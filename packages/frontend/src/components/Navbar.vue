@@ -36,12 +36,7 @@ export default {
         { label: "Create", route: "/create-knight", icon: "mdi-plus" },
       ],
     };
-  },
-  methods: {
-    toggleMenu() {
-      console.log("Menu toggled"); 
-    },
-  },
+  }
 };
 </script>
 
