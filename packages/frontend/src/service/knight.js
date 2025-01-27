@@ -16,6 +16,11 @@ const remove = async (id) => {
     return result.data;
 }
 
+const update = async ({ id, nickName }) => {
+    const result = await api.patch(`${PATH}/${id}`, { nickName })
+    return result.data;
+}
+
 const create = async (payload) => {
     const result = await api.post(PATH, payload)
     return result.data
@@ -25,5 +30,6 @@ export const knightService = {
     findAll,
     create,
     findById,
-    remove
+    remove,
+    update
 }

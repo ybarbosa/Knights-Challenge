@@ -18,7 +18,8 @@
           <v-card-text v-else>
             <v-card v-if="knight">
              <div class="knight-details mb-2">
-              <h3 class="knight-name">{{ knight.name.toUpperCase() }}</h3>
+              <h3 class="knight-name mb-3">{{ knight.name.toUpperCase() }}</h3>
+              <p class="knight-info"><strong>Apelido:</strong> {{ knight.nickName }}</p>
               <p class="knight-info"><strong>Idade:</strong> {{ knight.birthday }}</p>
               <p class="knight-info"><strong>Armas:</strong> {{ knight.weapons }}</p>
               <p class="knight-info"><strong>Atributo:</strong> {{ knight.attribute }}</p>
@@ -28,21 +29,74 @@
 
             </div>
 
-            <v-btn
-              :disabled="knight.hero"
-              color="primary"
-              @click="updateKnight"
-              class="mt-4"
-              block
-            >
-              Convert to hero
-            </v-btn>
-            </v-card>
+           <v-row class="ml-2 mr-2">
+            <v-col cols="6" md="6">
+               <v-btn
+                :disabled="knight.hero"
+                color="primary"
+                @click="DeleteKnight"
+                class="mt-4"
+                block
+              >
+                Convert to hero
+              </v-btn>
+            </v-col>
+            <v-col cols="6" md="6">
+              <v-btn
+                color="red accent-2"
+                @click="openDialog"
+                class="mt-4"
+                block
+              >
+                <span class="white--text"> Edit </span>
+              </v-btn>
+            </v-col>
+           </v-row>
+          </v-card>
           </v-card-text>
         </v-card>
       </v-col>
     </v-row>
+    <v-dialog
+      v-model="dialog"
+      max-width="500"
+      persistent
+    >
+      <v-card
+        max-width="500"
+        prepend-icon="mdi-update"
+        title="Update in progress"
+      >
+        <v-card-title class="text-center">
+          <span>Edit Knight</span>
+        </v-card-title>
+        <v-form>
+          <v-text-field
+            v-model="newNickName"
+            label="New nickname"
+            :rules="[rules.required]"
+            outlined
+            dense
+            height="48px"
+            class="my-2 mx-4"
+          />
+        </v-form>
+        <v-card-actions class="justify-end">
+          <v-btn
+            :disabled="knight.nickName === newNickName"
+            @click="updateKnightDetails"
+            small
+            color="primary"
+          > Save new nickname </v-btn>
+          <v-btn
+            small
+            @click="dialog = false"
+          > Close modal </v-btn>
+        </v-card-actions>
+      </v-card>
+  </v-dialog>
   </v-container>
+
 </template>
 
 <script>
@@ -53,6 +107,11 @@ export default {
   data() {
     return {
       loading: true,
+      dialog: false,
+      newNickName: '',
+      rules: {
+        required: value => !!value || "This field is required"
+      }
     };
   },
   computed: {
@@ -64,12 +123,24 @@ export default {
   methods: {
      ...mapActions({
       deleteKnight: 'deleteKnight',
-      findByIdKnight: 'findByIdKnight'
+      findByIdKnight: 'findByIdKnight',
+      updateKnight: 'updateKnight'
     }),
-    async updateKnight() {
+    async DeleteKnight() {
       this.loading = true
       await this.deleteKnight(this.knightId)
       this.loading = false
+    },
+    openDialog(){
+      this.dialog = true
+      this.newNickName = this.knight.nickName
+    },
+    async updateKnightDetails() {
+      this.loading = true
+      await this.updateKnight({ id: this.knightId, nickName: this.newNickName.toLowerCase() })
+      this.newNickName = ''
+      this.loading = false
+      this.dialog = false
     }
   },
   async mounted() {

@@ -37,6 +37,12 @@ export default new Vuex.Store({
 
     },
 
+    async updateKnight({ dispatch }, params) {
+      await knightService.update(params)
+      dispatch('findByIdKnight', params.id)
+
+    },
+
     async findByIdKnight({commit}, id) {
       const result = await knightService.findById(id)
       commit('setKnight', result.data)
