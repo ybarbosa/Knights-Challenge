@@ -3,7 +3,7 @@
     <v-container class="nav-box">
       <img
         width="44px"
-        @click="$router.push('/')"
+        @click="$router.currentRoute.path !== '/' ? $router.push('/') : null"
         src="../assets/knight.png"
         alt="Knights Logo"
         role="button"
@@ -14,7 +14,7 @@
       <v-btn
         v-for="(link, index) in links"
         :key="index"
-        @click="$router.push(link.route)"
+        @click="$router.currentRoute.path !== link.route ? $router.push(link.route): null"
         class="mx-2 nav-btn"
         text
         rounded
