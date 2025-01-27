@@ -2,7 +2,12 @@
   <v-container class="home">
     <div class="contenedor">
       <v-checkbox label="Filter by heroes" @change="filterByHero"/>
-      <ul class="knight-list">
+      <v-row v-if="loading" justify="center">
+        <v-col cols="12" class="text-center">
+          <v-progress-circular indeterminate color="primary" size="30"></v-progress-circular>
+        </v-col>
+      </v-row>
+      <ul v-else class="knight-list">
         <li v-for="knight in knights" :key="knight.nickName" class="knight-card" @click="openKnightDetails(knight.id)">
           <div class="knight-details">
             <h3 class="knight-name">{{ knight.name.toUpperCase() }}</h3>
@@ -27,6 +32,11 @@ export default {
   components: {
     Alert
   },
+  data() {
+    return {
+      loading: false,
+    };
+  },
   computed: {
     ...mapState(["knights", "error"]),
   },
@@ -39,11 +49,15 @@ export default {
     },
     async filterByHero(value) {
       const filter = value ? 'heroes' : '';
+      this.loading = true;
       await this.findAllKnight(filter);
+      this.loading = false;
     }
   },
   async mounted() {
+    this.loading = true;
     await this.findAllKnight();
+    this.loading = false;
   }
 };
 </script>

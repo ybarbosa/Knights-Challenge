@@ -1,6 +1,11 @@
 <template>
   <v-container class="add-knight">
-    <v-row justify="center">
+    <v-row v-if="loading" justify="center">
+        <v-col cols="12" class="text-center">
+          <v-progress-circular indeterminate color="primary" size="30"></v-progress-circular>
+        </v-col>
+      </v-row>
+    <v-row justify="center" v-else>
       <v-col cols="12" md="8" lg="6">
         <v-card class="pa-4" outlined>
           <v-card-title class="headline text-center">
@@ -126,6 +131,7 @@ export default {
         required: value => !!value || "This field is required",
         select:  (v) =>  v.length>0 || "Item is required"
       },
+      loading: false
     };
   },
   methods: {
@@ -134,6 +140,7 @@ export default {
       createKnight: 'createKnight'
     }),
     async addKnight() {
+      this.loading = true
       const weapons = this.newKnight.weapons.map(({ id }) => ({
         isEquipped: this.weaponsEquipped === id,
         id,
@@ -151,12 +158,15 @@ export default {
         this.loading = false
         return
       }
+      this.loading = false
 
       this.$router.push('/')
     },
   },
   async mounted() {
+    this.loading = true;
     await this.findAllWeapon();
+    this.loading = false;
   }
 };
 </script>
