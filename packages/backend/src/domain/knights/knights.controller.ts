@@ -10,11 +10,12 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { KnightsService } from './knights.service';
+import { IKnightFormatted, KnightsService } from './knights.service';
 import { RequestKnightCreateDto } from './dto/create.dto';
 import { RequestKnightUpdateDto } from './dto/update.dto';
-import { ApiBody, ApiParam, ApiQuery, ApiResponse } from '@nestjs/swagger';
-
+import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
+import { ResponseStruct } from '../common/responseStruct';
+import { Knight } from '@prisma/client';
 const knightUnFormattedDefault = {
   id: '67953c429cbd1f7a2a503123',
   nickname: 'teste_teste',
@@ -52,7 +53,6 @@ const knightFormattedDefault = {
   hero: true,
   experance: 0,
 };
-
 @Controller('knight')
 export class KnightsController {
   constructor(private readonly appService: KnightsService) {}
@@ -70,8 +70,16 @@ export class KnightsController {
     },
   })
   @HttpCode(HttpStatus.CREATED)
-  async create(@Body() body: RequestKnightCreateDto) {
-    return await this.appService.create(body);
+  async create(
+    @Body() body: RequestKnightCreateDto,
+  ): Promise<ResponseStruct<Knight>> {
+    const result = await this.appService.create(body);
+    return {
+      statusCode: 201,
+      message: 'Knight created successfully',
+      data: result,
+      error: '',
+    };
   }
 
   @Get('')
@@ -92,8 +100,17 @@ export class KnightsController {
     type: String,
   })
   @HttpCode(HttpStatus.OK)
-  async findAll(@Query('filter') filter: string) {
-    return await this.appService.findAll(filter);
+  async findAll(
+    @Query('filter') filter: string,
+  ): Promise<ResponseStruct<IKnightFormatted[]>> {
+    const result = await this.appService.findAll(filter);
+
+    return {
+      statusCode: 200,
+      message: 'Knights found successfully',
+      data: result,
+      error: '',
+    };
   }
 
   @Get('/:id')
@@ -114,8 +131,17 @@ export class KnightsController {
     },
   })
   @HttpCode(HttpStatus.OK)
-  async findById(@Param('id') id: string) {
-    return await this.appService.findById(id);
+  async findById(
+    @Param('id') id: string,
+  ): Promise<ResponseStruct<IKnightFormatted>> {
+    const result = await this.appService.findById(id);
+
+    return {
+      statusCode: 200,
+      message: 'Knight found successfully',
+      data: result,
+      error: '',
+    };
   }
 
   @Delete('/:id')
@@ -139,8 +165,14 @@ export class KnightsController {
     },
   })
   @HttpCode(HttpStatus.OK)
-  async delete(@Param('id') id: string) {
-    return await this.appService.delete(id);
+  async delete(@Param('id') id: string): Promise<ResponseStruct<Knight>> {
+    const result = await this.appService.delete(id);
+    return {
+      statusCode: 200,
+      message: 'Knight deleted successfully',
+      data: result,
+      error: '',
+    };
   }
 
   @Patch('/:id')
@@ -162,7 +194,16 @@ export class KnightsController {
   })
   @ApiBody({ type: RequestKnightUpdateDto })
   @HttpCode(HttpStatus.OK)
-  async update(@Param('id') id: string, @Body() body: RequestKnightUpdateDto) {
-    return await this.appService.update(id, body);
+  async update(
+    @Param('id') id: string,
+    @Body() body: RequestKnightUpdateDto,
+  ): Promise<ResponseStruct<Knight>> {
+    const result = await this.appService.update(id, body);
+    return {
+      data: result,
+      statusCode: 200,
+      message: 'Knight updated successfully',
+      error: '',
+    }
   }
 }

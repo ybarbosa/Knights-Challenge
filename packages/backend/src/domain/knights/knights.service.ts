@@ -21,7 +21,7 @@ export interface IKnightFormatted {
 @Injectable()
 export class KnightsService {
   constructor(private readonly prismaService: PrismaService) {}
-  async create(body: RequestKnightCreateDto): Promise<ResponseStruct<Knight>> {
+  async create(body: RequestKnightCreateDto): Promise<Knight> {
     const weaponsKnights = body.weapons
       .filter(({ id }) => ObjectId.isValid(id))
       .map(({ isEquipped, id }) => ({
@@ -30,7 +30,7 @@ export class KnightsService {
       }));
     if (
       weaponsKnights.length > 1 &&
-      weaponsKnights.every((weapon) => weapon.isEquipped === true)
+      weaponsKnights.filter(({ isEquipped }) => isEquipped).length > 1
     ) {
       throw new BadRequestException(
         'Only one weapon can be equipped by a knight.',
@@ -95,15 +95,10 @@ export class KnightsService {
       },
     });
 
-    return {
-      statusCode: 201,
-      message: 'Knight created successfully',
-      data: newKnight,
-      error: '',
-    };
+    return newKnight;
   }
 
-  async findAll(filters?: string): Promise<ResponseStruct<IKnightFormatted[]>> {
+  async findAll(filters?: string): Promise<IKnightFormatted[]> {
     const handlerFilters = {
       heroes: { isHero: true },
     };
@@ -115,16 +110,11 @@ export class KnightsService {
       this.formatteKnight(knight),
     );
 
-    return {
-      statusCode: 200,
-      message: 'Knights found successfully',
-      data: knightsFormatted,
-      error: '',
-    };
+    return knightsFormatted;
   }
 
-  async findById(id: string): Promise<ResponseStruct<IKnightFormatted>> {
-    if(!ObjectId.isValid(id)) {
+  async findById(id: string): Promise<IKnightFormatted> {
+    if (!ObjectId.isValid(id)) {
       throw new BadRequestException('KnightId not valid');
     }
     const knight: Knight = await this.prismaService.knight.findUnique({
@@ -137,16 +127,11 @@ export class KnightsService {
       throw new BadRequestException('Knight not found');
     }
 
-    return {
-      statusCode: 200,
-      message: 'Knight found successfully',
-      data: this.formatteKnight(knight),
-      error: '',
-    };
+    return this.formatteKnight(knight);
   }
 
-  async delete(id: string) {
-     if(!ObjectId.isValid(id)) {
+  async delete(id: string): Promise<Knight> {
+    if (!ObjectId.isValid(id)) {
       throw new BadRequestException('KnightId not valid');
     }
 
@@ -167,15 +152,10 @@ export class KnightsService {
       },
     });
 
-    return {
-      statusCode: 200,
-      message: 'Knight deleted successfully',
-      data: newKnight,
-      error: '',
-    };
+    return newKnight;
   }
 
-  async update(id: string, body: RequestKnightUpdateDto) {
+  async update(id: string, body: RequestKnightUpdateDto): Promise<Knight> {
      if(!ObjectId.isValid(id)) {
       throw new BadRequestException('KnightId not valid');
     }
@@ -195,7 +175,7 @@ export class KnightsService {
         nickname: body.nickName.toLowerCase(),
       },
     });
-    
+
     if (nickNameExits) {
       throw new BadRequestException('Nickname already exists');
     }
@@ -207,12 +187,7 @@ export class KnightsService {
       },
     });
 
-    return {
-      statusCode: 200,
-      message: 'Knight updated successfully',
-      data: newKnight,
-      error: '',
-    };
+    return newKnight;
   }
 
   private formatteKnight(knight: Knight): IKnightFormatted {
