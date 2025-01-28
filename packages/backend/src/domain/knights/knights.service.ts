@@ -156,7 +156,7 @@ export class KnightsService {
   }
 
   async update(id: string, body: RequestKnightUpdateDto): Promise<Knight> {
-     if(!ObjectId.isValid(id)) {
+    if (!ObjectId.isValid(id)) {
       throw new BadRequestException('KnightId not valid');
     }
 

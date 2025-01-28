@@ -204,6 +204,6 @@ export class KnightsController {
       statusCode: 200,
       message: 'Knight updated successfully',
       error: '',
-    }
+    };
   }
 }
