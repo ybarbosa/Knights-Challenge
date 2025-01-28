@@ -5,7 +5,7 @@ import { PrismaModule } from './domain/prisma/prisma.module';
 import { WeaponController } from './domain/wepons/weapon.controller';
 import { WeaponService } from './domain/wepons/weapon.service';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggingInterceptor } from './infra/logging.interceptor';
+import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 @Module({
   imports: [PrismaModule],

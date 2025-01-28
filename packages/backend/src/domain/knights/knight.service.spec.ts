@@ -215,15 +215,6 @@ describe('KnightService', () => {
       formatteKnightSpy.mockRestore();
       formatteKnightSpy.mockReset();
     });
-    describe('When knightId is invalid', () => {
-      it('Should return an error', async () => {
-        try {
-          await sut.findById('any-id');
-        } catch (error) {
-          expect(error.message).toBe('KnightId not valid');
-        }
-      });
-    });
     describe('When knight not exists', () => {
       it('Should return an error', async () => {
         const idFake = mockObjectId();
@@ -257,15 +248,6 @@ describe('KnightService', () => {
   });
 
   describe('.delete', () => {
-    describe('When knightId is invalid', () => {
-      it('Should return an error', async () => {
-        try {
-          await sut.delete('any-id');
-        } catch (error) {
-          expect(error.message).toBe('KnightId not valid');
-        }
-      });
-    });
     describe('When knight not exists', () => {
       it('Should return an error', async () => {
         const idFake = mockObjectId();
@@ -307,15 +289,6 @@ describe('KnightService', () => {
   });
 
   describe('.update', () => {
-    describe('When knightId is invalid', () => {
-      it('Should return an error', async () => {
-        try {
-          await sut.update('any-id', { nickName: 'any' });
-        } catch (error) {
-          expect(error.message).toBe('KnightId not valid');
-        }
-      });
-    });
     describe('When knight not exists', () => {
       it('Should return an error', async () => {
         const idFake = mockObjectId();

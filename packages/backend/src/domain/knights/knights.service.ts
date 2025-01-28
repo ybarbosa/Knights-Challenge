@@ -2,7 +2,6 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { RequestKnightCreateDto } from './dto/create.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { AttributeName, Knight, Weapon } from '@prisma/client';
-import { ResponseStruct } from '../common/responseStruct';
 import { differenceInCalendarYears } from 'date-fns';
 import { RequestKnightUpdateDto } from './dto/update.dto';
 import { ObjectId } from 'mongodb';
@@ -114,9 +113,6 @@ export class KnightsService {
   }
 
   async findById(id: string): Promise<IKnightFormatted> {
-    if (!ObjectId.isValid(id)) {
-      throw new BadRequestException('KnightId not valid');
-    }
     const knight: Knight = await this.prismaService.knight.findUnique({
       where: {
         id,
@@ -131,10 +127,6 @@ export class KnightsService {
   }
 
   async delete(id: string): Promise<Knight> {
-    if (!ObjectId.isValid(id)) {
-      throw new BadRequestException('KnightId not valid');
-    }
-
     const knight: Knight = await this.prismaService.knight.findUnique({
       where: {
         id,
@@ -156,10 +148,6 @@ export class KnightsService {
   }
 
   async update(id: string, body: RequestKnightUpdateDto): Promise<Knight> {
-    if (!ObjectId.isValid(id)) {
-      throw new BadRequestException('KnightId not valid');
-    }
-
     const knight: Knight = await this.prismaService.knight.findUnique({
       where: {
         id,

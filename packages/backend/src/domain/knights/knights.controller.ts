@@ -9,6 +9,7 @@ import {
   Patch,
   Post,
   Query,
+  UseInterceptors,
 } from '@nestjs/common';
 import { IKnightFormatted, KnightsService } from './knights.service';
 import { RequestKnightCreateDto } from './dto/create.dto';
@@ -16,6 +17,7 @@ import { RequestKnightUpdateDto } from './dto/update.dto';
 import { ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { ResponseStruct } from '../common/responseStruct';
 import { Knight } from '@prisma/client';
+import { ValidateObjectIdInterceptor } from 'src/interceptors/validateObjectId.interceptor';
 const knightUnFormattedDefault = {
   id: '67953c429cbd1f7a2a503123',
   nickname: 'teste_teste',
@@ -114,6 +116,7 @@ export class KnightsController {
   }
 
   @Get('/:id')
+  @UseInterceptors(ValidateObjectIdInterceptor)
   @ApiQuery({
     name: 'id',
     required: false,
@@ -145,6 +148,7 @@ export class KnightsController {
   }
 
   @Delete('/:id')
+  @UseInterceptors(ValidateObjectIdInterceptor)
   @ApiQuery({
     name: 'id',
     required: false,
@@ -176,6 +180,7 @@ export class KnightsController {
   }
 
   @Patch('/:id')
+  @UseInterceptors(ValidateObjectIdInterceptor)
   @ApiQuery({
     name: 'id',
     required: false,
